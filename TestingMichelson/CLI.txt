@@ -1,0 +1,30 @@
+tezos-client list mockup protocols
+
+PtGRANADsDU8R9daYKAgWnQYAJ64omN1o3KMGVCykShA97vQbvV
+PsFLorenaUUuikDWvMDr6fGBRG8kt3e3D3fHoXK1j1BFRxeSH4i
+
+tezos-client \
+  --protocol PtGRANADsDU8R9daYKAgWnQYAJ64omN1o3KMGVCykShA97vQbvV \
+  --base-dir /tmp/mockup \
+  --mode mockup \
+  create mockup
+
+
+alias mockup-client='tezos-client --mode mockup --base-dir /tmp/mockup'
+
+mockup-client list known addresses
+
+mockup-client originate contract mockup_testme \
+              transferring 0 from bootstrap1 \
+              running "`cat mockup_testme.tz`" \
+              --init \"foo\" --burn-cap 0.1
+
+mockup-client get contract storage for mockup_testme
+
+ligo compile-parameter mockup_testme.mligo main "Append (\"bar\")"
+
+mockup-client transfer 0 from bootstrap2 \
+              to mockup_testme \
+              --arg \"bar\" --burn-cap 0.01
+
+mockup-client get contract storage for mockup_testme
